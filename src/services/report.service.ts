@@ -13,7 +13,7 @@ const checkFileExists = async (file: string): Promise<boolean> => {
     }
 }
 
-export const sendTemplateStudentDocx = async (student: Student) => {
+export const sendTemplateStudentDocx = async (student: Student, codeStudent: string) => {
 
     // Read template
     const template = await readFile(path.join(__dirname, '../reports/template-student.docx'));
@@ -28,9 +28,12 @@ export const sendTemplateStudentDocx = async (student: Student) => {
             firstname: student.firstname.toUpperCase(),
             middlename: student.middlename.toUpperCase(),
             department: student.name_department,
+            group_date_start: student.group_date_start,
             specialty: `${student.specialty_name} ${student.profile_name}`,
             code: student.code,
+            form_name: student.form_name === 'Очная' ? 'Студент очной формы' : 'Студент заочной формы',
             photo: getIamgeStudent,
+            codeStudent: codeStudent,
         },
     });
     const accessDirectory = await checkFileExists(path.join(__dirname, "../storage"));

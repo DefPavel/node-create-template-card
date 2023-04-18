@@ -18,20 +18,34 @@ export const getAllStudents = async (req: Request, res: Response) => {
 
         // только бакалавр 1-3 курс
         const arrayBak = arrayStudents.filter(x =>
-            x.form_name === 'Очная' 
-            && x.level_name === 'бакалавриат' 
+            x.name_department === 'Факультет музыкально-художественного образования имени Джульетты Якубович'
+            && x.form_name === 'Очная'
+            && x.level_name === 'бакалавриат'
             && (x.group_course === '1' || x.group_course === '2' || x.group_course === '3')
         );
         // магистратура 1 курс
-        const arrayMag = arrayStudents.filter(x => x.form_name === 'Очная' && x.level_name === 'магистратура' && x.group_course === '1');
+        const arrayMag = arrayStudents.filter(x =>
+            x.name_department === 'Факультет музыкально-художественного образования имени Джульетты Якубович'
+            && x.form_name === 'Очная'
+            && x.level_name === 'магистратура'
+            && x.group_course === '1');
 
         const mergeArray = [...arrayMag, ...arrayBak];
 
-        //const filterArray = arrayStudents.find( x => x.lastname === 'Тасаковский');
+        // const filterArray = arrayStudents.find( x => x.lastname === 'Тасаковский');
 
-        // create template
-        // await sendTemplateStudentDocx(filterArray);
-
+        let i = 1;
+        let codeStudent = '';
+        for (const iterator of mergeArray) {
+     
+            const index = i < 10 ? `00${i}` : (i < 100 && i >= 10) ? `0${i}` : i.toString();
+            const date = iterator.group_date_start.slice(-2);
+            // console.log({original: iterator.group_date_start , split: date});  
+            codeStudent = `1${iterator.code}${date}${index}`;
+            // create template
+            await sendTemplateStudentDocx(iterator, codeStudent);
+            i++;
+        }
         res.status(200).send(mergeArray)
 
     } catch (error) {

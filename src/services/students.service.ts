@@ -14,18 +14,30 @@ type ResponseImage = {
     extension: string
 }
 
-export const getBufferImageByUrl = async (urlStudent: string) : Promise<ResponseImage> => {
-    
-    const {data} = await axios.get(config.HOST_API + `/${urlStudent}`,  { responseType: 'arraybuffer' });
+const ImageFormatText = (url: string) => {
 
-    const typeFile = urlStudent.substring(urlStudent.length - 3);
+    const original = url.replace(' ', '%20')
+        .toLowerCase()
+        .substring(url.length - 3);
+
+    if (original === 'jpg' || original === 'png')
+        return original;
+
+    return 'jpeg';
+}
+
+export const getBufferImageByUrl = async (urlStudent: string): Promise<ResponseImage> => {
+
+    const { data } = await axios.get(config.HOST_API + `/${urlStudent}`, { responseType: 'arraybuffer' });
+
+    const typeFile = ImageFormatText(urlStudent);
 
     const buffer = Buffer.from(data, "utf-8")
     return {
         data: buffer,
         width: 2.90,
-        height: 3.80,
-        extension: `.${typeFile}`,
+        height: 3.70,
+        extension: `.${typeFile.toLowerCase()}`,
     }
 }
 
