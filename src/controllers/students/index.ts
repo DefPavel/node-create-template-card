@@ -18,14 +18,14 @@ export const getAllStudents = async (req: Request, res: Response) => {
 
         // только бакалавр 1-3 курс
         const arrayBak = arrayStudents.filter(x =>
-            x.name_department === 'Факультет музыкально-художественного образования имени Джульетты Якубович'
+            x.name_department === 'Институт физического воспитания и спорта'
             && x.form_name === 'Очная'
             && x.level_name === 'бакалавриат'
             && (x.group_course === '1' || x.group_course === '2' || x.group_course === '3')
         );
         // магистратура 1 курс
         const arrayMag = arrayStudents.filter(x =>
-            x.name_department === 'Факультет музыкально-художественного образования имени Джульетты Якубович'
+            x.name_department === 'Институт физического воспитания и спорта'
             && x.form_name === 'Очная'
             && x.level_name === 'магистратура'
             && x.group_course === '1');
@@ -46,7 +46,7 @@ export const getAllStudents = async (req: Request, res: Response) => {
             await sendTemplateStudentDocx(iterator, codeStudent);
             i++;
         }
-        res.status(200).send(mergeArray)
+        res.status(200).send(mergeArray);
 
     } catch (error) {
         console.log(error);

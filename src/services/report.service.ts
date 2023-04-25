@@ -2,7 +2,15 @@ import { readFile, writeFile, mkdir, access, constants } from 'fs/promises';
 import createReport from 'docx-templates';
 import * as path from 'path';
 import { Student } from '../interfaces/students';
-import { getBufferImageByUrl } from './students.service';
+import axios from "axios";
+import config from "../config";
+
+type ResponseImage = {
+    data: Buffer,
+    width: number,
+    height: number,
+    extension: string
+}
 
 const checkFileExists = async (file: string): Promise<boolean> => {
     try {
@@ -11,6 +19,39 @@ const checkFileExists = async (file: string): Promise<boolean> => {
     } catch {
         return false;
     }
+}
+
+export const getBufferImageByUrl = async (urlStudent: string): Promise<ResponseImage> => {
+
+    const { data } = await axios.get(config.HOST_API + `/${urlStudent}`, { responseType: 'arraybuffer' });
+
+    const typeFile = imageFormatText(urlStudent);
+
+    const buffer = Buffer.from(data, "utf-8")
+    return {
+        data: buffer,
+        width: 2.90,
+        height: 3.70,
+        extension: `.${typeFile.toLowerCase()}`,
+    }
+}
+
+export const imageFormatText = (url: string) => {
+
+    const original = url.replace(' ', '%20')
+        .toLowerCase()
+        .substring(url.length - 3);
+
+    if (original === 'jpg' || original === 'png')
+        return original;
+
+    return 'jpeg';
+}
+
+export const createImage = async (buffer: Buffer, student: Student) => {
+
+    const typeFile = imageFormatText(student.photo_path);
+    await writeFile(path.join(__dirname, `../storage/${student.lastname}.${typeFile.toLowerCase()}`), buffer);
 }
 
 export const sendTemplateStudentDocx = async (student: Student, codeStudent: string) => {
@@ -41,6 +82,8 @@ export const sendTemplateStudentDocx = async (student: Student, codeStudent: str
     if (!accessDirectory)
         await mkdir(path.join(__dirname, "../storage"));
 
-    // write File
+    // write File docx
     await writeFile(path.join(__dirname, `../storage/${student.lastname}.docx`), buffer);
+    // create image 
+    // await createImage(getIamgeStudent.data, student);
 }
