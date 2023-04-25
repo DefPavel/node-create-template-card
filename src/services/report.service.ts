@@ -27,7 +27,8 @@ export const getBufferImageByUrl = async (urlStudent: string): Promise<ResponseI
 
     const typeFile = imageFormatText(urlStudent);
 
-    const buffer = Buffer.from(data, "utf-8")
+    const buffer = Buffer.from(data, "utf-8");
+    
     return {
         data: buffer,
         width: 2.90,
@@ -55,7 +56,7 @@ export const createImage = async (buffer: Buffer, student: Student) => {
 }
 
 export const sendTemplateStudentDocx = async (student: Student, codeStudent: string) => {
-
+ 
     // Read template
     const template = await readFile(path.join(__dirname, '../reports/template-student.docx'));
     // get Buffer Image
@@ -83,7 +84,7 @@ export const sendTemplateStudentDocx = async (student: Student, codeStudent: str
         await mkdir(path.join(__dirname, "../storage"));
 
     // write File docx
-    await writeFile(path.join(__dirname, `../storage/${student.lastname}.docx`), buffer);
+    await writeFile(path.join(__dirname, `../storage/${codeStudent}_${student.lastname}.docx`), buffer);
     // create image 
     // await createImage(getIamgeStudent.data, student);
 }
