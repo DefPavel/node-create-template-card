@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../config";
-import { User } from "../interfaces/user";
+import { User } from "../entity/user";
 
 export const getToken = async (userData: User): Promise<User> => {
     

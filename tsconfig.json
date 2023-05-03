@@ -10,10 +10,13 @@
        "rootDir": "./src",
        "outDir": "./build",
        "alwaysStrict": true,
+       "declaration": true,
        "removeComments": true,
        "emitDecoratorMetadata": true,
        "experimentalDecorators": true,
-       "sourceMap": true
+       "sourceMap": true,
+       "incremental": true,
+       "skipLibCheck": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "**/*.spec.ts"]

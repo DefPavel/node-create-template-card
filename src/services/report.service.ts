@@ -1,7 +1,7 @@
 import { readFile, writeFile, mkdir, access, constants } from 'fs/promises';
 import createReport from 'docx-templates';
 import * as path from 'path';
-import { Student } from '../interfaces/students';
+import { Student } from '../entity/students';
 import axios from "axios";
 import config from "../config";
 
@@ -23,11 +23,18 @@ const checkFileExists = async (file: string): Promise<boolean> => {
 
 export const getBufferImageByUrl = async (urlStudent: string): Promise<ResponseImage> => {
 
-    const { data } = await axios.get(config.HOST_API + `/${urlStudent}`, { responseType: 'arraybuffer' });
+    const { data, status } = await axios.get(config.HOST_API + `/${urlStudent}`, { responseType: 'arraybuffer' });
 
     const typeFile = imageFormatText(urlStudent);
 
     const buffer = Buffer.from(data, "utf-8");
+
+    if (status !== 200) return {
+        data: null,
+        width: 2.90,
+        height: 3.70,
+        extension: `.${typeFile.toLowerCase()}`,
+    }
     
     return {
         data: buffer,
