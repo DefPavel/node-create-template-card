@@ -48,7 +48,8 @@ export const getAllStudents = async (req: Request, res: Response) => {
 
                 codeStudent = `1${iterator.code}${date}${index}`;
                 // create template
-                if (
+                /* if (
+                    студенты с битыми фотками
                     iterator.id !== 3387 
                     && iterator.id !== 3392 
                     && iterator.id !== 3394 
@@ -58,10 +59,11 @@ export const getAllStudents = async (req: Request, res: Response) => {
                     && iterator.id !== 3462
                     && iterator.id !== 3471
                     && iterator.id !== 3472
-                    && iterator.id !== 3473) {
-    
+                    && iterator.id !== 3473) 
+                    */
+
                     await sendTemplateStudentDocx(iterator, codeStudent);
-                }
+                
                 
                 i++; 
             }
