@@ -1,8 +1,9 @@
 # create-template-card
-Регенерация документов *.docx по заданному шаблону
-### Build Application:
+Генерация пропусков в формате *.docx для студентов
+(Переделанный вариант Андрея)
+### Build Project:
 ``npm i ``
 ``npm run build ``
-### Run Application:
+### Run Project:
 ``npm i ``
 ``npm start ``
